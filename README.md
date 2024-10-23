@@ -10,22 +10,21 @@ With the introduction of OpenAI's function calling, a new era of AI-powered API 
 
 The current version supports OpenAPI specifications and generated Swagger clients. Additional API specifications will be supported in future releases.
 
-## Before you start
-
-To use this project, you need to have a generated Swagger Python client. 
-You can generate this client from your OpenAPI specification using tools like:
-[Swagger Codegen](https://github.com/swagger-api/swagger-codegen) or [Swagger Editor](https://editor.swagger.io/) .
-
 For more inspiration, check out the original post that influenced this project: [Function calling with an OpenAPI specification](https://cookbook.openai.com/examples/function_calling_with_an_openapi_spec)
 
-## Install
+## Prerequisites
+
+To use this project, you need to have a generated Swagger Python client. 
+You can generate this client from your OpenAPI specification with
+[Swagger Codegen](https://github.com/swagger-api/swagger-codegen) or [Swagger Editor](https://editor.swagger.io/).
 
 Requires Python 3.10+
+
+## Install
 
 ```bash
 pip install git+https://github.com/Romamo/pyapicaller.git
 ```
-
 ## Usage
 
 Use operationId and generated swagger to call the API. I already added petstore swagger client to the examples folder.
