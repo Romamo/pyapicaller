@@ -37,7 +37,6 @@ class SwaggerCaller(BaseAPICaller):
 
         if path:
             self._path = path
-            sys.path.insert(0, self._path)
         if configuration:
             self._configuration = configuration
 
@@ -93,6 +92,8 @@ class SwaggerCaller(BaseAPICaller):
         path = []
         if self._path and self._path != '.':
             path.append(self._path)
+            if path not in sys.path:
+                sys.path.insert(0, self._path)
         path.append(self._client_package)
         if module_name:
             path.append(module_name)
