@@ -5,12 +5,13 @@ with open('README.md', 'r', encoding='utf-8') as fh:
 
 setup(
     name='pyapicaller',  # Ensure this matches the package name
-    version='0.1.0',
+    version='0.1.1',
     packages=find_packages(),
     install_requires=[
         'jsonref==1.1.0',
         'pydantic==2.9.2',
         'openai==1.52.0',
+        'pyyaml==6.0.2'
     ],
     author='Roman Medvedev',
     author_email='your.email@example.com',  # Replace with your actual email
