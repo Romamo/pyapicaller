@@ -1,12 +1,16 @@
-[tool.poetry]
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
 name = "pyapicaller"
 version = "0.1.1"
-description = "A simple API caller package for Python"
-authors = ["Roman Medvedev <pypi@romavm.dev>"]
-license = "MIT"
+description = "Easily connect any API to OpenAI function calling"
+authors = [{ name="Roman Medvedev", email="pypi@romavm.dev" }]
 readme = "README.md"
 requires-python = ">=3.10"
-homepage = "https://github.com/Romamo/pyapicaller"
+license = {text = "MIT"}
+
 keywords = ["API", "caller", "Python"]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -16,12 +20,12 @@ classifiers = [
     "Operating System :: OS Independent",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
+dependencies = [
+    'jsonref>=1.1.0',
+    'pydantic>=2.9.2',
+    'pyyaml>=6.0.2'
+    ]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-jsonref = "^1.1.0"
-pydantic = "^2.9.2"
-
-[tool.poetry.urls]
-"Homepage" = "https://github.com/Romamo/pyapicaller"
-"Issues" = "https://github.com/Romamo/pyapicaller/issues"
+[project.urls]
+Homepage = "https://github.com/Romamo/pyapicaller"
+Issues = "https://github.com/Romamo/pyapicaller/issues"
