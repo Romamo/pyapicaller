@@ -1,14 +1,10 @@
-[build-system]
-requires = ["setuptools>=42", "wheel"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "pyapicaller"
-version = "0.1.3"
+version = "0.1.5"
 description = "Easily connect any API to OpenAI function calling"
 authors = [{ name="Roman Medvedev", email="pypi@romavm.dev" }]
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 license = {text = "MIT"}
 
 keywords = ["API", "caller", "Python"]
@@ -21,11 +17,14 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
-    'jsonref>=1.1.0',
-    'pydantic>=2.9.2',
-    'pyyaml>=6.0.2'
+    'jsonref',
+    'pydantic',
+    'pyyaml'
     ]
 
 [project.urls]
-Homepage = "https://github.com/Romamo/pyapicaller"
-Issues = "https://github.com/Romamo/pyapicaller/issues"
+homepage = "https://github.com/Romamo/pyapicaller"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"

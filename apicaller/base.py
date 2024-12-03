@@ -1,9 +1,9 @@
 class BaseAPICaller:
-    def get_functions(self) -> list[dict]:
+    def get_tools(self) -> list[dict]:
         """
-        Returns a list of functions formatted for OpenAI.
+        Returns a list of tools formatted for OpenAI.
 
-        :return: A list of functions that can be called.
+        :return: A list of tools that can be called.
         """
         raise NotImplementedError
 

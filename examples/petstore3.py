@@ -28,23 +28,23 @@ client = OpenAI()
 caller = OpenaiCaller(swagger_caller)
 
 
-def get_openai_response(functions, messages):
+def get_openai_response(tools, messages):
     return client.chat.completions.create(
         model='gpt-4o-mini',
-        tools=functions,
+        tools=tools,
         tool_choice="auto",  # "auto" means the model can pick between generating a message or calling a function.
         temperature=0,
         messages=messages,
     )
 
 
-functions = caller.get_functions()
+tools = caller.get_tools()
 messages = [
     {"role": "user", "content": "Get pet id 5"},
 ]
 
 for num_calls in range(5):
-    response = get_openai_response(functions, messages)
+    response = get_openai_response(tools, messages)
     if response.choices[0].message.tool_calls:
         messages.append(response.choices[0].message)
         messages.append({"role": "tool",

@@ -24,5 +24,5 @@ class OpenaiCaller:
             return json.dumps(to_dict(response))
         return "Not found or other error"
 
-    def get_functions(self):
-        return self._caller.get_functions()
+    def get_tools(self):
+        return self._caller.get_tools()

@@ -43,11 +43,7 @@ class SwaggerCaller(BaseAPICaller):
         # Path append
         path_client = os.path.join(self._path, self._client_package)
         if not os.path.exists(path_client):
-            self._read_spec()
-
-            def serialize_obj(obj):
-                print(type(obj))
-                return obj
+            self._load_spec()
 
             # Call swagger generator API to generate the client
             response = requests.post('https://generator3.swagger.io/api/generate', json={
@@ -164,7 +160,7 @@ class SwaggerCaller(BaseAPICaller):
         #     return
         return response
 
-    def get_functions(self) -> list[dict]:
+    def get_tools(self) -> list[dict]:
         if not self._spec:
             self._load_spec()
 
