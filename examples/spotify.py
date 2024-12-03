@@ -7,7 +7,7 @@ CLIENT_PACKAGE = 'swagger_client'
 # Get access token https://developer.spotify.com/documentation/web-api
 ACCESS_TOKEN = 'ACCESS_TOKEN'
 
-swagger_caller = SwaggerCaller(CLIENT_PACKAGE, OPENAPI_SPEC, configuration={'debug': True, 'access_token': ACCESS_TOKEN})
+swagger_caller = SwaggerCaller(CLIENT_PACKAGE, OPENAPI_SPEC, configuration={'access_token': ACCESS_TOKEN})
 # functions = swagger_caller.get_functions()
 # print(functions)
 album = swagger_caller.call_api('get-an-album', id='xxx')

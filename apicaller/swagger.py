@@ -1,9 +1,15 @@
 import importlib
+import io
+import json
+import os
 import re
 import urllib.request
+import zipfile
+from pathlib import Path
 from typing import Union
 
 import jsonref
+import requests
 import yaml
 from pydantic.alias_generators import to_snake, to_pascal
 
@@ -15,17 +21,47 @@ class SwaggerCaller(BaseAPICaller):
     _openapi = None
     _configuration = None
     _client = None
+    _path = 'generated_clients'
 
-    def __init__(self, swagger_client: str, openapi: Union[str, dict] = None, configuration: dict = None):
-        self.client_package = swagger_client
+    def __init__(self, swagger_client: str, openapi: Union[str, dict] = None,
+                 path: Union[Path, str] = None,
+                 configuration: dict = None
+                 ):
+        self._client_package = swagger_client
         if openapi:
             if isinstance(openapi, dict):
                 self._spec = openapi
             else:
                 self._openapi = openapi
 
+        if path:
+            self._path = path
         if configuration:
             self._configuration = configuration
+
+    def generate(self):
+        # Path append
+        path_client = os.path.join(self._path, self._client_package)
+        if not os.path.exists(path_client):
+            self._read_spec()
+
+            def serialize_obj(obj):
+                print(type(obj))
+                return obj
+
+            # Call swagger generator API to generate the client
+            response = requests.post('https://generator3.swagger.io/api/generate', json={
+                "spec": json.loads(jsonref.dumps(self._spec)),
+                "type": "CLIENT",
+                "lang": "python"
+            })
+            if response.status_code == 200:
+                # Create a ZipFile object from the response content
+                zip_file = zipfile.ZipFile(io.BytesIO(response.content))
+                # Extract the contents of the zip file
+                zip_file.extractall(self._path)
+
+                return True
 
     def _load_yaml(self, content: str):
         self._spec = yaml.safe_load(content)
@@ -33,7 +69,7 @@ class SwaggerCaller(BaseAPICaller):
     def _load_json(self, content: str):
         self._spec = jsonref.loads(content)
 
-    def _load_spec(self):
+    def _read_spec(self):
         if self._openapi.startswith('http'):
             response = urllib.request.urlopen(self._openapi)
             content = response.read()
@@ -46,14 +82,16 @@ class SwaggerCaller(BaseAPICaller):
         else:
             self._load_yaml(content)
 
+    def _load_spec(self):
+        self._read_spec()
         # resolve references
         self._spec = jsonref.replace_refs(self._spec)
 
     def _get_module(self, module_name: str = None):
         if module_name:
-            full_module_name = f"{self.client_package}.{module_name}"
+            full_module_name = f"{self._path}.{self._client_package}.{module_name}"
         else:
-            full_module_name = self.client_package
+            full_module_name = self._client_package
         try:
             return importlib.import_module(full_module_name)
         except ModuleNotFoundError:
@@ -116,13 +154,14 @@ class SwaggerCaller(BaseAPICaller):
 
         self._configure()
 
-        try:
-            response = method(*args, **kwargs)
-        except Exception as e:
-            print(e)
-            if e.status == 404:
-                return None
-            return
+        response = method(*args, **kwargs)
+        # try:
+        #     response = method(*args, **kwargs)
+        # except Exception as e:
+        #     print(e)
+        #     if e.status == 404:
+        #         return None
+        #     return
         return response
 
     def get_functions(self) -> list[dict]:

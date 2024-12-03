@@ -23,17 +23,19 @@ Requires Python 3.10+
 ## Install
 
 ```bash
-pip install git+https://github.com/Romamo/pyapicaller.git
+pip install pyapicaller
 ```
 ## Usage
 
 Use operationId and generated swagger to call the API. I already added petstore swagger client to the examples folder.
 
+https://editor.swagger.io/?url=https://raw.githubusercontent.com/swagger-api/swagger-petstore/refs/heads/master/src/main/resources/openapi.yaml
+
 ```python
 from apicaller.swagger import SwaggerCaller
 
 # Use any OpenAPI spec file
-OPENAPI_SPEC = "examples/petstore3/openapi.json"
+OPENAPI_SPEC = "https://petstore3.swagger.io/api/v3/openapi.json"
 # Generate swagger client and copy the client package to the current directory
 CLIENT_PACKAGE = "swagger_client"
 
@@ -47,7 +49,7 @@ from openai import OpenAI
 from apicaller import OpenaiCaller, SwaggerCaller
 
 # Use any OpenAPI spec file
-OPENAPI_SPEC = "examples/petstore3/openapi.json"
+OPENAPI_SPEC = "https://petstore3.swagger.io/api/v3/openapi.json"
 # Generate swagger client and copy the client package to the current directory
 CLIENT_PACKAGE = "swagger_client"
 
