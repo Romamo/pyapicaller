@@ -1,6 +1,6 @@
 [project]
 name = "pyapicaller"
-version = "0.1.5"
+version = "0.1.6"
 description = "Easily connect any API to OpenAI function calling"
 authors = [{ name="Roman Medvedev", email="pypi@romavm.dev" }]
 readme = "README.md"

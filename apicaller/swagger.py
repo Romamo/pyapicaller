@@ -1,3 +1,4 @@
+import http.client
 import importlib
 import io
 import json
@@ -9,7 +10,6 @@ from pathlib import Path
 from typing import Union
 
 import jsonref
-import requests
 import yaml
 from pydantic.alias_generators import to_snake, to_pascal
 
@@ -46,14 +46,18 @@ class SwaggerCaller(BaseAPICaller):
             self._load_spec()
 
             # Call swagger generator API to generate the client
-            response = requests.post('https://generator3.swagger.io/api/generate', json={
-                "spec": json.loads(jsonref.dumps(self._spec)),
-                "type": "CLIENT",
-                "lang": "python"
-            })
-            if response.status_code == 200:
+            conn = http.client.HTTPSConnection('generator3.swagger.io')
+            conn.request('POST', '/api/generate',
+                         json.dumps({
+                             "spec": json.loads(jsonref.dumps(self._spec)),
+                             "type": "CLIENT",
+                             "lang": "python"
+                         }),
+                         {'Content-type': 'application/json'})
+            response = conn.getresponse()
+            if response.status == 200:
                 # Create a ZipFile object from the response content
-                zip_file = zipfile.ZipFile(io.BytesIO(response.content))
+                zip_file = zipfile.ZipFile(io.BytesIO(response.read()))
                 # Extract the contents of the zip file
                 zip_file.extractall(self._path)
 
