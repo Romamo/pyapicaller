@@ -14,8 +14,8 @@ OPENAPI_SPEC = "https://petstore3.swagger.io/api/v3/openapi.json"
 CLIENT_PACKAGE = "swagger_client"
 
 swagger_caller = SwaggerCaller(CLIENT_PACKAGE, OPENAPI_SPEC, configuration={'host': 'https://petstore3.swagger.io/api/v3'})
-# Generate swagger client if it does not exist
 
+# Generate swagger client if it does not exist
 swagger_caller.generate()
 sys.path.insert(0, 'generated_clients')
 

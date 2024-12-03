@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyapicaller"
-version = "0.1.1"
+version = "0.1.3"
 description = "Easily connect any API to OpenAI function calling"
 authors = [{ name="Roman Medvedev", email="pypi@romavm.dev" }]
 readme = "README.md"
