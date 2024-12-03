@@ -17,7 +17,6 @@ swagger_caller = SwaggerCaller(CLIENT_PACKAGE, OPENAPI_SPEC, configuration={'hos
 
 # Generate swagger client if it does not exist
 swagger_caller.generate()
-sys.path.insert(0, 'generated_clients')
 
 print("Calling api directly")
 pet = swagger_caller.call_api('getPetById', pet_id=6)

@@ -4,6 +4,7 @@ import io
 import json
 import os
 import re
+import sys
 import urllib.request
 import zipfile
 from pathlib import Path
@@ -21,7 +22,7 @@ class SwaggerCaller(BaseAPICaller):
     _openapi = None
     _configuration = None
     _client = None
-    _path = 'generated_clients'
+    _path = 'swagger_clients'
 
     def __init__(self, swagger_client: str, openapi: Union[str, dict] = None,
                  path: Union[Path, str] = None,
@@ -36,6 +37,7 @@ class SwaggerCaller(BaseAPICaller):
 
         if path:
             self._path = path
+            sys.path.insert(0, self._path)
         if configuration:
             self._configuration = configuration
 
@@ -88,10 +90,14 @@ class SwaggerCaller(BaseAPICaller):
         self._spec = jsonref.replace_refs(self._spec)
 
     def _get_module(self, module_name: str = None):
+        path = []
+        if self._path and self._path != '.':
+            path.append(self._path)
+        path.append(self._client_package)
         if module_name:
-            full_module_name = f"{self._path}.{self._client_package}.{module_name}"
-        else:
-            full_module_name = self._client_package
+            path.append(module_name)
+
+        full_module_name = '.'.join(path)
         try:
             return importlib.import_module(full_module_name)
         except ModuleNotFoundError:
