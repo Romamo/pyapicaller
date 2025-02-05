@@ -13,6 +13,7 @@ from typing import Union
 
 import jsonref
 
+from .parser import _parse_parameters
 from .base import BaseAPICaller
 
 
@@ -36,6 +37,8 @@ class SwaggerCaller(BaseAPICaller):
 
         if client_package:
             self._client_package = client_package
+            if self._get_path() not in sys.path:
+                sys.path.insert(0, self._get_path())
         self._configuration = configuration
         self._generate_client = generate_client
 
@@ -242,7 +245,7 @@ class SwaggerCaller(BaseAPICaller):
                 # 3. Extract a description and parameters.
                 desc = spec.get("description") or spec.get("summary", "")
 
-                schema = {"type": "object", "properties": {}}
+                schema = {"type": "object", "properties": {}, "additionalProperties": False}
 
                 req_body = (
                     spec.get("requestBody", {})
@@ -265,8 +268,9 @@ class SwaggerCaller(BaseAPICaller):
                         "properties": param_properties,
                     }
 
+                schema2 = _parse_parameters(spec)
                 functions.append(
-                    {"type": "function", "function": {"name": function_name, "description": desc, "parameters": schema}}
+                    {"type": "function", "function": {"name": function_name, "description": desc, "parameters": schema2}}
                 )
 
         return functions
