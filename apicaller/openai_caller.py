@@ -1,6 +1,7 @@
 import json
 
 from openai.types.chat.chat_completion_message_tool_call import Function
+
 from pydantic.alias_generators import to_snake
 
 from apicaller.base import BaseAPICaller

@@ -1,28 +1,18 @@
-import sys
-
 try:
     from openai import OpenAI
 except ModuleNotFoundError:
     raise ModuleNotFoundError("This example requires openai package. Install it with `pip install openai`")
 
-from apicaller import OpenaiCaller
+from apicaller.openai_caller import OpenaiCaller
 from apicaller.swagger import SwaggerCaller
 
-# Use any OpenAPI spec file
 OPENAPI_SPEC = "https://petstore3.swagger.io/api/v3/openapi.json"
-# Generate swagger client and copy the client package to the base directory
-CLIENT_PACKAGE = "swagger_client"
 
-swagger_caller = SwaggerCaller(CLIENT_PACKAGE, OPENAPI_SPEC, configuration={'host': 'https://petstore3.swagger.io/api/v3'})
+swagger_caller = SwaggerCaller(OPENAPI_SPEC,
+                               client_package='examples.petstore3.swagger_clients.swagger_client',
+                               generate_client=True,
+                               configuration={'host': 'https://petstore3.swagger.io/api/v3'})
 
-# Generate swagger client if it does not exist
-swagger_caller.generate()
-
-print("Calling api directly")
-pet = swagger_caller.call_api('getPetById', pet_id=6)
-print(pet)
-
-print("Using OpenAI to call API")
 client = OpenAI()
 caller = OpenaiCaller(swagger_caller)
 

@@ -1,6 +1,10 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "pyapicaller"
-version = "0.1.11"
+version = "0.2.1"
 description = "Easily connect any API to OpenAI function calling"
 authors = [{ name="Roman Medvedev", email="pypi@romavm.dev" }]
 readme = "README.md"
@@ -18,13 +22,12 @@ classifiers = [
 ]
 dependencies = [
     'jsonref',
-    'pydantic',
-    'pyyaml'
     ]
 
 [project.urls]
 homepage = "https://github.com/Romamo/pyapicaller"
 
-[build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+[project.optional-dependencies]
+yaml = ["pyyaml"]
+swagger = ["urllib3 >= 1.15", "six >= 1.10", "certifi", "python-dateutil"]
+openai = ["openai"]
